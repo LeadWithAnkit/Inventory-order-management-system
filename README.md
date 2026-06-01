@@ -72,7 +72,21 @@ For Render deployment, the backend uses a single connection string via `DATABASE
 DATABASE_URL=postgresql://<user>:<password>@<host>:5432/<database>
 ```
 
-For local Docker development, you may still use the Docker Compose variables defined in `docker-compose.yml`.
+If you are not using a local PostgreSQL server, set this in Render using the external Render PostgreSQL URL.
+
+## Frontend environment
+
+For a deployed frontend, configure `VITE_API_URL` with your backend service URL including the API prefix:
+
+```ini
+VITE_API_URL=https://<your-backend-url>.onrender.com/api/v1
+```
+
+If you run locally with Vite proxying HTTP requests, you may use:
+
+```ini
+VITE_API_URL=/api/v1
+```
 
 ## Manual image build
 
