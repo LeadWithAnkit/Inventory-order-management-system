@@ -83,6 +83,55 @@ docker build -t inventory-backend ./backend
 docker build -t inventory-frontend ./frontend
 ```
 
+## Deployment on Render and Vercel
+
+### 1. Deploy PostgreSQL on Render
+
+1. Sign in to Render and create a new PostgreSQL database.
+2. Use these values:
+   - Database name: `inventory_db`
+   - User: `postgres`
+   - Password: set a strong password
+   - Port: `5432`
+3. Copy the database connection details from Render.
+
+### 2. Deploy the backend on Render
+
+1. Create a new Web Service on Render.
+2. Select Docker and connect your GitHub repo.
+3. Set the build command to use the existing Dockerfile in `backend/`.
+4. Set the start command to:
+
+```bash
+python app/db_init.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+5. Add these environment variables in Render:
+   - `POSTGRES_SERVER`: your Render DB host
+   - `POSTGRES_USER`: your Render DB user
+   - `POSTGRES_PASSWORD`: your Render DB password
+   - `POSTGRES_DB`: `inventory_db`
+   - `POSTGRES_PORT`: `5432`
+   - `PORT`: `10000`
+
+6. Deploy the backend and note the service URL.
+
+### 3. Deploy the frontend on Vercel
+
+1. Create a new Vercel project and point it to the `frontend/` directory.
+2. Use the default build command: `npm run build`.
+3. Set the output directory to `dist`.
+4. Add an environment variable:
+   - `VITE_API_URL`: `https://<your-render-backend-url>/api/v1`
+
+5. Deploy the frontend.
+
+### 4. Final notes
+
+- The backend container uses a `PORT` environment variable, so Render can route traffic properly.
+- The frontend build uses `VITE_API_URL` to call the deployed backend.
+- If you use a custom backend domain, update `VITE_API_URL` accordingly.
+
 ## API overview
 
 ### Products
