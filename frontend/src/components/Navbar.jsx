@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 
 function Navbar({ onToggleSidebar }) {
@@ -11,9 +12,9 @@ function Navbar({ onToggleSidebar }) {
         >
           <Menu size={20} />
         </button>
-        <span className="app-title">
+        <Link to="/" className="app-title">
           Inventory Panel
-        </span>
+        </Link>
       </div>
       <div className="header-right" />
     </header>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { LayoutDashboard, Package, Users, Receipt, PlusCircle, X } from 'lucide-react';
 
 function Sidebar({ isOpen, onClose }) {
@@ -14,8 +14,10 @@ function Sidebar({ isOpen, onClose }) {
   return (
     <aside className={`app-sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-logo">
-        <Package size={24} color="var(--primary-color)" />
-        <span>StockFlow</span>
+        <Link to="/" className="sidebar-logo-link">
+          <Package size={24} color="var(--primary-color)" />
+          <span>StockFlow</span>
+        </Link>
         <button 
           style={{ marginLeft: 'auto', display: 'none', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-light)' }} 
           className="menu-toggle-btn"
