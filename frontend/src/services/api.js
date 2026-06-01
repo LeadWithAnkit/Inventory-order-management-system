@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://inventory-order-management-system-dz4h.onrender.com/api/v1';
 
 async function request(path, options = {}) {
   const url = `${API_BASE}${path}`;
