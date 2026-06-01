@@ -66,15 +66,13 @@ FRONTEND_PORT=5173 docker compose up --build
 
 ## Backend environment
 
-The backend expects these database variables inside Docker:
+For Render deployment, the backend uses a single connection string via `DATABASE_URL`.
 
 ```ini
-POSTGRES_SERVER=db
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=inventory_db
-POSTGRES_PORT=5432
+DATABASE_URL=postgresql://<user>:<password>@<host>:5432/<database>
 ```
+
+For local Docker development, you may still use the Docker Compose variables defined in `docker-compose.yml`.
 
 ## Manual image build
 
@@ -107,11 +105,7 @@ python app/db_init.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
 5. Add these environment variables in Render:
-   - `POSTGRES_SERVER`: your Render DB host
-   - `POSTGRES_USER`: your Render DB user
-   - `POSTGRES_PASSWORD`: your Render DB password
-   - `POSTGRES_DB`: `inventory_db`
-   - `POSTGRES_PORT`: `5432`
+   - `DATABASE_URL`: `postgresql://<user>:<password>@<host>:5432/<database>`
    - `PORT`: `10000`
 
 6. Deploy the backend and note the service URL.

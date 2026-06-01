@@ -1,6 +1,6 @@
 import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import computed_field
+from pydantic import model_validator
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Inventory & Order Management System"
@@ -11,11 +11,17 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "inventory_db"
     POSTGRES_PORT: str = "5432"
+    DATABASE_URL: str | None = None
 
-    @computed_field
-    @property
-    def DATABASE_URL(self) -> str:
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+    @model_validator(mode="after")
+    def assemble_database_url(self):
+        if self.DATABASE_URL:
+            return self
+        self.DATABASE_URL = (
+            f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
+            f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        )
+        return self
 
     model_config = SettingsConfigDict(
         env_file=".env",
